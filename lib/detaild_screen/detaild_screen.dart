@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 import 'package:project3d/apiservice/api_service.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class ModelDetailScreen extends StatelessWidget {
   final ModelDetails model;
@@ -32,129 +33,132 @@ class ModelDetailScreen extends StatelessWidget {
         foregroundColor: Theme.of(context).colorScheme.onSurface,
       ),
       extendBodyBehindAppBar: true,
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Theme.of(context).colorScheme.primary.withOpacity(0.1),
-              Theme.of(context).colorScheme.surface,
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            stops: const [0.0, 0.4],
+      body: Padding(
+        padding: kIsWeb?  EdgeInsets.only(left: MediaQuery.of( context).size.width * 0.3, right: MediaQuery.of( context).size.width * 0.3): const EdgeInsets.all(0),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                Theme.of(context).colorScheme.surface,
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: const [0.0, 0.4],
+            ),
           ),
-        ),
-        child: Column(
-          children: [
-            Expanded(
-              flex: 2,
-              child: Hero(
-                tag: model.url, // For a smooth transition animation
-                child: ClipRRect(
-                  borderRadius:
-                      const BorderRadius.vertical(bottom: Radius.circular(30)),
-                  child: ModelViewer(
-                    src: model.url,
-                    alt: 'A 3D model of ',
-                    ar: true,
-                    autoRotate: true,
-                    cameraControls: true,
-                    backgroundColor: Colors.transparent,
+          child: Column(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Hero(
+                  tag: model.url, // For a smooth transition animation
+                  child: ClipRRect(
+                    borderRadius:
+                        const BorderRadius.vertical(bottom: Radius.circular(30)),
+                    child: ModelViewer(
+                      src: model.url,
+                      alt: 'A 3D model of ',
+                      ar: true,
+                      autoRotate: true,
+                      cameraControls: true,
+                      backgroundColor: Colors.transparent,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Expanded(
-              flex: 3,
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+              Expanded(
+                flex: 3,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Future Corner 3D Model",
+                        style: textTheme.headlineMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                    const SizedBox(height: 8),
                     Text(
-                      "Future Corner 3D Model",
-                      style: textTheme.headlineMedium
-                          ?.copyWith(fontWeight: FontWeight.bold),
+                      'A stunning 3D asset from our collection.',
+                      style: textTheme.titleMedium
+                          ?.copyWith(color: Colors.grey.shade600),
                     ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'A stunning 3D asset from our collection.',
-                    style: textTheme.titleMedium
-                        ?.copyWith(color: Colors.grey.shade600),
-                  ),
-                  const SizedBox(height: 24),
-                  const Divider(),
-                  const SizedBox(height: 16),
-                  Text(
-                    'About this model',
-                    style: textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 8),
-                   Text(
-                    'This is a detailed description of the 3D model. It can include information about its origin, purpose, materials, and any other relevant details.',
-                    style: textTheme.bodyLarge,
-                  ),
-                  const SizedBox(height: 24),
-                  _buildInfoTile(
-                    context,
-                    icon: Icons.info_outline,
-                    label: 'Public ID',
-                    value: model.publicId,
-                  ),
-                  const SizedBox(height: 8),
-                  _buildInfoTile(
-                    context,
-                    icon: Icons.memory,
-                    label: 'Size',
-                    value: '${(model.bytes / 1024).toStringAsFixed(2)} KB',
-                  ),
-                  const SizedBox(height: 8),
-                  _buildInfoTile(
-                    context,
-                    icon: Icons.code,
-                    label: 'Format',
-                    value: model.format.toUpperCase(),
-                  ),
-                  const SizedBox(height: 24),
-                  Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.blue.withOpacity(0.4),
-                          spreadRadius: 1,
-                          blurRadius: 8,
-                          offset: const Offset(0, 4),
+                    const SizedBox(height: 24),
+                    const Divider(),
+                    const SizedBox(height: 16),
+                    Text(
+                      'About this model',
+                      style: textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 8),
+                     Text(
+                      'This is a detailed description of the 3D model. It can include information about its origin, purpose, materials, and any other relevant details.',
+                      style: textTheme.bodyLarge,
+                    ),
+                    const SizedBox(height: 24),
+                    _buildInfoTile(
+                      context,
+                      icon: Icons.info_outline,
+                      label: 'Public ID',
+                      value: model.publicId,
+                    ),
+                    const SizedBox(height: 8),
+                    _buildInfoTile(
+                      context,
+                      icon: Icons.memory,
+                      label: 'Size',
+                      value: '${(model.bytes / 1024).toStringAsFixed(2)} KB',
+                    ),
+                    const SizedBox(height: 8),
+                    _buildInfoTile(
+                      context,
+                      icon: Icons.code,
+                      label: 'Format',
+                      value: model.format.toUpperCase(),
+                    ),
+                    const SizedBox(height: 24),
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.blue.withOpacity(0.4),
+                            spreadRadius: 1,
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                        gradient: LinearGradient(
+                          colors: [Colors.blue.shade400, Colors.purple.shade400],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                         ),
-                      ],
-                      gradient: LinearGradient(
-                        colors: [Colors.blue.shade400, Colors.purple.shade400],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: ElevatedButton.icon(
-                      icon: const Icon(Icons.shopping_cart_checkout_outlined, color: Colors.white),
-                      label: Text('BUY NOW', style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold, color: Colors.white)),
-                      onPressed: () => _launchUrl(context),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
-                        shadowColor: Colors.transparent,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                      child: ElevatedButton.icon(
+                        icon: const Icon(Icons.shopping_cart_checkout_outlined, color: Colors.white),
+                        label: Text('BUY NOW', style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold, color: Colors.white)),
+                        onPressed: () => _launchUrl(context),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-    ));
+          ],
+        ),
+            ),
+      ));
   }
 
   Widget _buildInfoTile(BuildContext context,

@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
@@ -6,6 +7,30 @@ import 'package:model_viewer_plus/model_viewer_plus.dart';
 import 'package:project3d/dashboard/dashboard.dart';
 import 'package:project3d/detaild_screen/detaild_screen.dart';
 import 'package:project3d/home/controller/home_controller.dart';
+import 'dart:js_interop' ;
+// @JS() // Bind to the global JavaScript scope
+// external Document get document;
+
+// @JS()
+// @staticInterop
+// class Document {}
+
+// extension DocumentExtension on Document {
+//   external Element createElement(String tag);
+//   external Element? getElementById(String id);
+//   external Element get body;
+// }
+// @JS()
+// @staticInterop
+// class Element {}
+
+// extension ElementExtension on Element {
+//   external set src(String url);
+//   external set type(String type);
+//   external void setAttribute(String name, String value);
+//   // external void appendChild(Element element);
+//   external Element appendChild(Element element);
+// }
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -167,6 +192,7 @@ class _ModelCard extends StatelessWidget {
   final VoidCallback onTap;
   final String modelUrl;
   final String heroTag;
+  // final Document document;
 
   const _ModelCard({
     required this.index,
@@ -177,10 +203,18 @@ class _ModelCard extends StatelessWidget {
     required this.onTap,
     required this.modelUrl,
     required this.heroTag,
+    // required this.document,
   });
+  //  void updateModelSrc(String newUrl) {
+  //   final modelViewer = document.getElementById('model-viewer-1');
+  //   if (modelViewer != null) {
+  //     modelViewer.setAttribute('src', newUrl);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
+    // updateModelSrc(modelUrl);
     final gradient = LinearGradient(
       colors: [
         Colors.purpleAccent.withOpacity(0.12 * (index % 3 + 2)), // slightly stronger
@@ -213,7 +247,8 @@ class _ModelCard extends StatelessWidget {
                     // 3D Viewer
                     Hero(
                       tag: heroTag,
-                      child: ModelViewer(
+                      child:
+                      ModelViewer(
                         src: modelUrl,
                         alt: "3D Model",
                         ar: false,
